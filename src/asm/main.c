@@ -226,9 +226,8 @@ opt_ParseDefines()
 void
 verror(const char *fmt, va_list args)
 {
-	fprintf(stderr, "ERROR:\t");
 	fstk_Dump();
-	fprintf(stderr, " :\n\t");
+	fprintf(stderr, "error: ");
 	vfprintf(stderr, fmt, args);
 	fprintf(stderr, "\n");
 	nErrors += 1;

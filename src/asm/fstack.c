@@ -165,12 +165,12 @@ fstk_Dump(void)
 	pLastFile = pFileStack;
 
 	while (pLastFile) {
-		fprintf(stderr, "%s(%ld) -> ", pLastFile->tzFileName,
+		fprintf(stderr, "In %s:%ld:\n", pLastFile->tzFileName,
 		    pLastFile->nLine);
 		pLastFile = pLastFile->pNext;
 	}
 
-	fprintf(stderr, "%s(%ld)", tzCurrentFileName, nLineNo);
+	fprintf(stderr, "%s:%ld: ", tzCurrentFileName, nLineNo);
 }
 
 /*
