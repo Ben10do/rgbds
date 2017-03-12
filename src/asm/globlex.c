@@ -267,6 +267,7 @@ struct sLexInitString staticstrings[] = {
 	{"def", T_OP_DEF},
 
 	{"bank", T_OP_BANK},
+	{"align", T_OP_ALIGN},
 
 	{"round", T_OP_ROUND},
 	{"ceil", T_OP_CEIL},
@@ -341,6 +342,7 @@ struct sLexInitString staticstrings[] = {
 	{"hram", T_SECT_HRAM},
 	{"wramx", T_SECT_WRAMX},
 	{"sram", T_SECT_SRAM},
+	{"oam", T_SECT_OAM},
 
 	{NAME_RB, T_POP_RB},
 	{NAME_RW, T_POP_RW},
