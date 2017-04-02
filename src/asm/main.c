@@ -258,9 +258,8 @@ warning(const char *fmt, ...)
 	va_list args;
 	va_start(args, fmt);
 	
-	fprintf(stderr, "warning: ");
 	fstk_Dump();
-	fprintf(stderr, ":\n\t");
+	fprintf(stderr, "warning: ");
 	vfprintf(stderr, fmt, args);
 	fprintf(stderr, "\n");
 	
