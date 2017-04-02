@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "extern/err.h"
+#include "link/assign.h"
 #include "link/mylink.h"
 #include "link/main.h"
 
@@ -28,7 +29,7 @@ enum ObjectFileContents {
  *
  */
 
-SLONG 
+SLONG
 readlong(FILE * f)
 {
 	SLONG r;
@@ -41,7 +42,7 @@ readlong(FILE * f)
 	return (r);
 }
 
-UWORD 
+UWORD
 readword(FILE * f)
 {
 	UWORD r;
@@ -59,7 +60,7 @@ readword(FILE * f)
 SLONG
 readasciiz(char **dest, FILE *f)
 {
-	SLONG r = 0;
+	size_t r = 0;
 	
 	size_t bufferLength = 16;
 	char *start = malloc(bufferLength);
@@ -223,7 +224,7 @@ obj_ReadRGB0Section(FILE * f)
 	return pSection;
 }
 
-void 
+void
 obj_ReadRGB0(FILE * pObjfile)
 {
 	struct sSection *pFirstSection;
@@ -288,13 +289,18 @@ obj_ReadRGBSection(FILE * f, enum ObjectFileContents contents)
 {
 	struct sSection *pSection;
 
-	pSection = AllocSection();
+	char * pzName;
 
 	if (contents & CONTAINS_SECTION_NAME) {
-		readasciiz(&pSection->pzName, f);
+		readasciiz(&pzName, f);
+		if (IsSectionNameInUse(pzName))
+			errx(1, "Section name \"%s\" is already in use.", pzName);
 	} else {
-		pSection->pzName = "";
+		pzName = "";
 	}
+
+	pSection = AllocSection();
+	pSection->pzName = pzName;
 
 	pSection->nByteSize = readlong(f);
 	pSection->Type = (enum eSectionType) fgetc(f);
@@ -369,7 +375,7 @@ obj_ReadRGBSection(FILE * f, enum ObjectFileContents contents)
 	return pSection;
 }
 
-void 
+void
 obj_ReadRGB(FILE * pObjfile, enum ObjectFileContents contents)
 {
 	struct sSection *pFirstSection;
@@ -429,7 +435,7 @@ obj_ReadRGB(FILE * pObjfile, enum ObjectFileContents contents)
  *
  */
 
-void 
+void
 obj_ReadOpenFile(FILE * pObjfile, char *tzObjectfile)
 {
 	char tzHeader[8];
@@ -458,7 +464,7 @@ obj_ReadOpenFile(FILE * pObjfile, char *tzObjectfile)
 	}
 }
 
-void 
+void
 obj_Readfile(char *tzObjectfile)
 {
 	FILE *pObjfile;
@@ -478,7 +484,7 @@ obj_Readfile(char *tzObjectfile)
 	oReadLib = 0;
 }
 
-SLONG 
+SLONG
 file_Length(FILE * f)
 {
 	ULONG r, p;
@@ -491,7 +497,7 @@ file_Length(FILE * f)
 	return (r);
 }
 
-void 
+void
 lib_ReadXLB0(FILE * f)
 {
 	SLONG size;

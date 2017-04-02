@@ -42,7 +42,7 @@ struct sOptionStackEntry {
 
 struct sOptionStackEntry *pOptionStack = NULL;
 
-void 
+void
 opt_SetCurrentOptions(struct sOptions * pOpt)
 {
 	if (nGBGfxID != -1) {
@@ -105,7 +105,7 @@ opt_SetCurrentOptions(struct sOptions * pOpt)
 	}
 }
 
-void 
+void
 opt_Parse(char *s)
 {
 	struct sOptions newopt;
@@ -154,7 +154,7 @@ opt_Parse(char *s)
 	opt_SetCurrentOptions(&newopt);
 }
 
-void 
+void
 opt_Push(void)
 {
 	struct sOptionStackEntry *pOpt;
@@ -167,7 +167,7 @@ opt_Push(void)
 		fatalerror("No memory for option stack");
 }
 
-void 
+void
 opt_Pop(void)
 {
 	if (pOptionStack) {
@@ -233,7 +233,7 @@ verror(const char *fmt, va_list args)
 	nErrors += 1;
 }
 
-void 
+void
 yyerror(const char *fmt, ...)
 {
 	va_list args;
@@ -242,7 +242,7 @@ yyerror(const char *fmt, ...)
 	va_end(args);
 }
 
-void 
+void
 fatalerror(const char *fmt, ...)
 {
 	va_list args;
@@ -252,7 +252,22 @@ fatalerror(const char *fmt, ...)
 	exit(5);
 }
 
-static void 
+void
+warning(const char *fmt, ...)
+{
+	va_list args;
+	va_start(args, fmt);
+	
+	fprintf(stderr, "warning: ");
+	fstk_Dump();
+	fprintf(stderr, ":\n\t");
+	vfprintf(stderr, fmt, args);
+	fprintf(stderr, "\n");
+	
+	va_end(args);
+}
+
+static void
 usage(void)
 {
 	printf(
@@ -261,7 +276,7 @@ usage(void)
 	exit(1);
 }
 
-int 
+int
 main(int argc, char *argv[])
 {
 	int ch;

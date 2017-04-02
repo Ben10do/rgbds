@@ -1,6 +1,7 @@
 #ifndef RGBDS_LINK_ASSIGN_H
 #define RGBDS_LINK_ASSIGN_H
 
+#include "mylink.h"
 #include "types.h"
 
 enum eBankCount {
@@ -33,5 +34,17 @@ extern void AssignSections(void);
 extern void CreateSymbolTable(void);
 extern SLONG MaxBankUsed;
 extern SLONG MaxAvail[MAXBANKS];
+
+int
+IsSectionNameInUse(const char *name);
+
+void
+SetLinkerscriptName(char *tzLinkerscriptFile);
+
+int
+IsSectionSameTypeBankAndFloating(const char *name, enum eSectionType type, int bank);
+
+unsigned int
+AssignSectionAddressAndBankByName(const char *name, unsigned int address, int bank);
 
 #endif

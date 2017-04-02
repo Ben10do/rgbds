@@ -13,19 +13,19 @@ SLONG rpnstack[256];
 SLONG rpnp;
 SLONG nPC;
 
-void 
+void
 rpnpush(SLONG i)
 {
 	rpnstack[rpnp++] = i;
 }
 
-SLONG 
+SLONG
 rpnpop(void)
 {
 	return (rpnstack[--rpnp]);
 }
 
-SLONG 
+SLONG
 getsymvalue(SLONG symid)
 {
 	switch (pCurrentSection->tSymbols[symid]->Type) {
@@ -51,7 +51,7 @@ getsymvalue(SLONG symid)
 	errx(1, "*INTERNAL* UNKNOWN SYMBOL TYPE");
 }
 
-SLONG 
+SLONG
 getsymbank(SLONG symid)
 {
 	SLONG nBank;
@@ -79,7 +79,7 @@ getsymbank(SLONG symid)
 	return nBank;
 }
 
-SLONG 
+SLONG
 calcrpn(struct sPatch * pPatch)
 {
 	SLONG t, size;
@@ -175,15 +175,6 @@ calcrpn(struct sPatch * pPatch)
 				    pPatch->pzFilename, pPatch->nLineNo);
 			}
 			break;
-		case RPN_PCEZP:
-			t = rpnpop();
-			rpnpush(t & 0xFF);
-			if (t < 0x2000 || t > 0x20FF) {
-				errx(1,
-				    "%s(%ld) : Value must be in the ZP area",
-				    pPatch->pzFilename, pPatch->nLineNo);
-			}
-			break;
 		case RPN_CONST:
 			/* constant */
 			t = (*rpn++);
@@ -240,7 +231,7 @@ calcrpn(struct sPatch * pPatch)
 	return (rpnpop());
 }
 
-void 
+void
 Patch(void)
 {
 	struct sSection *pSect;
